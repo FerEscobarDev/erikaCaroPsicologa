@@ -7,7 +7,7 @@
         </div>
         <div class="lg:max-w-[1654px] lg:max-h-[788px] w-full rounded-xl shadow-[0px_20px_30px_8px_rgba(0,0,0,0.3)]">
             <div class="snap-x snap-mandatory overflow-x-scroll w-full inline-flex scrollbar-hide" ref="slider">
-                <CardSlide class="snap-center" :img="'src/img/personal.png'" :title="'Desarrollo Personal'" :key="1">
+                <CardSlide class="snap-center" :img="'../img/personal.png'" :title="'Desarrollo Personal'" :key="1">
                     <h3 class="font-semibold text-xl text-brand-secundary mb-2">Talleres grupales</h3>
                     <h3 class="font-semibold text-xl text-brand-secundary">Asesorías personalizadas</h3>
                     <ul class="list-disc list-inside text-gray-600 font-semibold ml-2 mb-2">
@@ -31,7 +31,7 @@
                         </a> 
                     </div>
                 </CardSlide>
-                <CardSlide class="snap-center" :img="'src/img/organizacional.png'" :title="'Organizacional'" :key="2">
+                <CardSlide class="snap-center" :img="'../img/organizacional.png'" :title="'Organizacional'" :key="2">
                     <h3 class="font-semibold text-xl text-brand-secundary">Talleres y capacitaciones:</h3>
                     <h5 class="font-semibold text-brand-claro ml-2 my-2">Servicio al cliente y comunicación asertiva</h5>
                     <p class="text-justify text-gray-600 font-semibold ml-2">   
@@ -69,7 +69,7 @@
                     </div>
                 </CardSlide>
 
-                <CardSlide class="snap-center" :img="'src/img/educativo.jpg'" :title="'Educativo'" :key="3">
+                <CardSlide class="snap-center" :img="'../img/educativo.jpg'" :title="'Educativo'" :key="3">
                     <h3 class="font-semibold text-xl text-brand-secundary">Colegios:</h3>
                     <h5 class="font-semibold text-brand-claro ml-2 my-2">Plan de orientación vocacional</h5>
                     <p class="text-justify text-gray-600 font-semibold ml-2">   

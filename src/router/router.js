@@ -5,6 +5,13 @@ import ServicesPage from '../pages/ServicesPage.vue';
 import FoundationPage from '../pages/FoundationPage.vue';
 
 const routes = [
+    
+    /* { 
+        path: '/:pathMatch(.*)*',
+        redirect: '/',
+        name: 'not-found',
+        component: NotFount,
+    }, */
     { 
         path: '/', 
         name: 'home',
@@ -25,11 +32,6 @@ const routes = [
         name: 'foundation',
         component: FoundationPage,
     },
-    /* { Pagina Not Fount
-        path: '/:pathMatch(.*)*',
-        name: 'not-found',
-        component: NotFount,
-    }, */
 ]
 
 const router = createRouter({
