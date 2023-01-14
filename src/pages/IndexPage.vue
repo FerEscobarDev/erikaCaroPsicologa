@@ -1,6 +1,6 @@
 <template>
-    <div class="absolute top-0 right-0 left-0 -z-50 w-full lg:h-full">
-        <img class="object-cover -z-50 fixed h-1/2 lg:h-3/4 w-full" src="../img/background_1.svg" alt="background">
+    <div class="absolute top-0 right-0 left-0 -z-50 w-full h-3/4">
+        <img class="object-cover 2xl:object-contain object-right-top -z-50 fixed h-2/3 2xl:h-full w-full" src="../img/background_1.svg" alt="background">
     </div>
     <div class="flex flex-col lg:flex-row-reverse justify-items-start lg:justify-center lg:items-center lg:w-full h-full p-3">
         <div class="pt-3 mb-10 lg:w-1/2">

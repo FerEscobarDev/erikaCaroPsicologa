@@ -15,6 +15,16 @@ module.exports = {
         fontFamily: {
             brand: ['Noto Sans', 'sans-serif'],
         },
+        keyframes: {
+            float: {
+                '0%': { transform: 'translate(0,  0px)' },
+                '50%': { transform: 'translate(5px,  15px)' },
+                '100%': { transform: 'translate(0,  -0px)' },
+            }
+        },
+        animation: {
+            float: 'float 5s infinite'
+        }
     },
   },
   plugins: [],
