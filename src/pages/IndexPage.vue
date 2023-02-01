@@ -33,6 +33,14 @@
                 Por lo anterior este es un espacio creado para ti en el que podrás encontrar una aliada para que puedas darle importancia 
                 a lo importante y encontrarte de nuevo con el bienestar emocional, psicológico y social que tanto anhelas.
             </p>
+            <blockquote class="mx-5">
+                <p class="text-brand-primary font-medium text-lg text-justify mt-5 mb-2">
+                    "Conozca todas las teorías, domine todas las técnicas ,pero al tocar un alma humana sea apenas otra alma humana."
+                </p>
+                <footer class="text-brand-primary font-bold text-lg text-right">
+                    <span class="text-black">-</span> Carl G. Jung
+                </footer>
+            </blockquote>
         </div>
     </div>
 </template>
