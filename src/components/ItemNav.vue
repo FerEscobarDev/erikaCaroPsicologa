@@ -1,6 +1,6 @@
 <template>
     <router-link :to="{ name: to }" :class="{ 'border-b-2 border-brand-primary': isActive }" 
-        class="block font-semibold text-brand-primary mt-5 mx-3 max-w-max active:bg-brand-claro pt-1 px-2 rounded-t transition"
+        class="block font-semibold text-brand-secundary mt-5 mx-3 max-w-max active:bg-brand-primary/30 active:border-b-2 active:border-brand-primary active:text-white pt-1 px-2 rounded-t transition-all"
     >
         <slot></slot>
     </router-link>
