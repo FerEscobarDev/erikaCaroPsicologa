@@ -10,7 +10,7 @@
                 Martes de 8pm a 9pm
                 <a 
                     class="text-brand-secundary underline ml-3" 
-                    href="https://api.whatsapp.com/send?phone=573213552207" 
+                    href="https://api.whatsapp.com/send?phone=573243874221" 
                     target="_blank">
                     Únete
                 </a>

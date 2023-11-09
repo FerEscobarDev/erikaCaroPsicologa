@@ -31,7 +31,7 @@
                             class="min-w-[150px] m-4 bg-brand-secundary p-2 text-white rounded-md border-brand-primary border-[1px]
                                 hover:bg-brand-claro hover:border-brand-secundary active:bg-brand-secundary active:border-brand-primary transition
                                 text-center" 
-                            href="https://api.whatsapp.com/send?phone=573213552207" 
+                            href="https://api.whatsapp.com/send?phone=573243874221" 
                             target="_blank">
                             Hablemos
                         </a> 
@@ -69,7 +69,7 @@
                             class="min-w-[150px] m-4 bg-brand-secundary p-2 text-white rounded-md border-brand-primary border-[1px]
                                 hover:bg-brand-claro hover:border-brand-secundary active:bg-brand-secundary active:border-brand-primary transition
                                 text-center" 
-                            href="https://api.whatsapp.com/send?phone=573213552207" 
+                            href="https://api.whatsapp.com/send?phone=573243874221" 
                             target="_blank">
                             Hablemos
                         </a> 
@@ -110,7 +110,7 @@
                             class="min-w-[150px] m-4 bg-brand-secundary p-2 text-white rounded-md border-brand-primary border-[1px]
                                 hover:bg-brand-claro hover:border-brand-secundary active:bg-brand-secundary active:border-brand-primary transition
                                 text-center" 
-                            href="https://api.whatsapp.com/send?phone=573213552207" 
+                            href="https://api.whatsapp.com/send?phone=573243874221" 
                             target="_blank">
                             Hablemos
                         </a> 
