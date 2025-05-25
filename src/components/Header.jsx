@@ -41,7 +41,7 @@ const Header = ({ sections, activeSection, setActiveSection }) => {
   };
 
   return (
-    <header className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white/70 shadow-lg' : 'bg-white/60'}`}>
+    <header className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white/70 shadow-lg' : 'bg-transparent'}`}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
         <motion.div
             initial={{opacity: 0, x: -20}}
