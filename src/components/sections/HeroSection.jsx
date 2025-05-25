@@ -30,7 +30,14 @@ const HeroSection = ({ setActiveSection }) => {
               Tu bienestar emocional es mi prioridad
             </h1>
             <p className="text-lg sm:text-xl text-foreground mb-8 max-w-xl mx-auto md:mx-0">
-              Hola, soy Erika Caro, psicóloga especialista en neuropsicología. Te acompaño con empatía a superar la ansiedad, depresión, estrés y más.
+              Hola, soy Erika Caro. <br />
+              Psicóloga, especialista en neuropsicología y educación.
+              Acompaño procesos de bienestar emocional, crecimiento personal y desarrollo profesional.
+              <br /><br />
+              <blockquote className="border-l-4 border-accent-purple-mid pl-4 italic text-lg text-foreground max-w-2xl mx-auto">
+                “Conozca todas las teorías, domine todas las técnicas, pero al tocar un alma humana sea apenas otra alma humana.”
+                <footer className="mt-2 text-sm font-medium text-primary-teal-mid">— Carl G. Jung</footer>
+              </blockquote>
             </p>
             <Button
               size="lg"
@@ -44,7 +51,7 @@ const HeroSection = ({ setActiveSection }) => {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="flex justify-center mt-12 md:mt-0"
+            className="hidden sm:flex justify-center mt-12 md:mt-0"
           >
             <div className="relative w-72 h-72 sm:w-80 sm:h-80 lg:w-96 lg:h-96">
               <div className="absolute inset-0 bg-gradient-to-br from-primary-teal-light to-accent-purple-lighter rounded-full opacity-50 transform -rotate-12"></div>

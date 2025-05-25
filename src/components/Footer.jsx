@@ -12,8 +12,8 @@ const Footer = () => {
             <p className="text-sm text-foreground">Tu bienestar emocional es mi prioridad.</p>
           </div>
           <div>
-            <span className="font-semibold text-primary-teal-dark mb-2 block">Enlaces</span>
-            <ul className="space-y-1">
+            <span className="font-semibold text-primary-teal-dark mb-2 block text-center md:text-left">Enlaces</span>
+            <ul className="flex flex-wrap justify-center md:justify-start gap-4">
               <li><a href="#inicio" className="text-sm text-foreground hover:text-primary-teal-mid">Inicio</a></li>
               <li><a href="#sobre-mi" className="text-sm text-foreground hover:text-primary-teal-mid">Sobre Mí</a></li>
               <li><a href="#servicios" className="text-sm text-foreground hover:text-primary-teal-mid">Servicios</a></li>

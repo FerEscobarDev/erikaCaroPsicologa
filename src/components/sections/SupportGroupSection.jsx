@@ -50,13 +50,18 @@ const SupportGroupSection = ({ setActiveSection }) => {
               Juntas creamos un ambiente seguro y de confianza para crecer, aprender y sanar. Si buscas una comunidad que te entienda y te impulse, este es tu lugar.
             </motion.p>
             <motion.div variants={itemVariants}>
-              <Button 
-                size="lg" 
-                className="bg-accent-purple-mid hover:bg-accent-purple-dark text-white rounded-full shadow-md"
-                onClick={scrollToContacto}
+              <a 
+                href="https://api.whatsapp.com/send?phone=573243874221&text=Hola%20Erika%2C%20me%20gustar%C3%ADa%20unirme%20al%20grupo%20de%20apoyo%20'Amiga%2C%20no%20est%C3%A1s%20sola'.%20%C2%BFMe%20puedes%20dar%20m%C3%A1s%20informaci%C3%B3n%3F"
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                Quiero unirme <ArrowRight size={18} className="ml-2" />
-              </Button>
+                <Button 
+                  size="lg" 
+                  className="bg-accent-purple-mid hover:bg-accent-purple-dark text-white rounded-full shadow-md"
+                >
+                  Quiero unirme <ArrowRight size={18} className="ml-2" />
+                </Button>
+              </a>
             </motion.div>
           </motion.div>
         </div>
