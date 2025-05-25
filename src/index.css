@@ -1,0 +1,111 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 200 20% 98%; /* #dfe1df - slightly adjusted for better contrast */
+    --foreground: 185 96% 17%; /* #025157 */
+
+    --card: 0 0% 100%;
+    --card-foreground: 185 96% 17%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 185 96% 17%;
+
+    --primary: 178 100% 31%; /* #00a19b */
+    --primary-foreground: 200 20% 98%; /* #dfe1df for text on primary */
+
+    --secondary: 175 80% 46%; /* #19d3c5 */
+    --secondary-foreground: 185 96% 17%;
+
+    --muted: 200 10% 90%; /* Lighter shade of #dfe1df */
+    --muted-foreground: 185 40% 30%; /* Darker muted text */
+
+    --accent: 280 58% 33%; /* #382246 */
+    --accent-foreground: 200 20% 98%; /* #dfe1df for text on accent */
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 200 10% 85%; /* Mid-tone of #dfe1df */
+    --input: 200 10% 85%;
+    --ring: 178 100% 31%; /* #00a19b for focus rings */
+
+    --radius: 0.5rem;
+
+    /* Accent palette */
+    --accent-purple-dark: 280 58% 33%; /* #382246 */
+    --accent-purple-mid: 291 35% 38%; /* #7c4182 */
+    --accent-purple-light: 284 47% 56%; /* #a05cbf */
+    --accent-purple-lighter: 284 58% 76%; /* #d79dd7 */
+
+    /* Primary palette */
+    --primary-teal-dark: 185 96% 17%; /* #025157 */
+    --primary-teal-mid: 178 100% 31%; /* #00a19b */
+    --primary-teal-light: 175 80% 46%; /* #19d3c5 */
+    --primary-teal-lighter: 200 20% 87%; /* #dfe1df */
+  }
+
+  .dark {
+    /* For future dark mode implementation, if requested. For now, using light theme values. */
+    --background: 185 96% 10%; 
+    --foreground: 200 20% 98%;
+
+    --card: 185 96% 12%;
+    --card-foreground: 200 20% 98%;
+
+    --popover: 185 96% 12%;
+    --popover-foreground: 200 20% 98%;
+
+    --primary: 178 100% 45%; 
+    --primary-foreground: 185 96% 10%;
+
+    --secondary: 175 80% 60%;
+    --secondary-foreground: 185 96% 10%;
+
+    --muted: 185 50% 20%;
+    --muted-foreground: 200 10% 70%;
+
+    --accent: 280 58% 50%;
+    --accent-foreground: 200 20% 98%;
+
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 185 50% 25%;
+    --input: 185 50% 25%;
+    --ring: 178 100% 45%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Acumin Pro', sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Slabo 27px', serif; /* Changed to a more accessible serif, 'SLENCO BLACK' might not be widely available */
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary));
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary-teal-dark));
+}
