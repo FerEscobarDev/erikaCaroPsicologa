@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import {Logo} from "@assets";
 
 const Header = ({ sections, activeSection, setActiveSection }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -43,18 +44,18 @@ const Header = ({ sections, activeSection, setActiveSection }) => {
     <header className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white/90 shadow-lg backdrop-blur-md' : 'bg-transparent'}`}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
         <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-2xl font-serif font-bold text-primary-teal-dark"
+            initial={{opacity: 0, x: -20}}
+            animate={{opacity: 1, x: 0}}
+            transition={{duration: 0.5}}
+            className="text-2xl font-serif font-bold text-primary-teal-dark"
         >
-          Erika Caro
+          <img className="h-8" src={Logo} alt="Erika Caro"/>
         </motion.div>
 
         <nav className="hidden md:flex items-center space-x-6">
           {sections.map((sectionId) => (
-            <motion.button
-              key={sectionId}
+              <motion.button
+                  key={sectionId}
               onClick={() => scrollToSection(sectionId)}
               className={`text-sm font-medium transition-colors ${
                 activeSection === sectionId

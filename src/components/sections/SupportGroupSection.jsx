@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { HeartHandshake, ArrowRight } from 'lucide-react';
+import {AmigaNoEstasSola} from "@assets";
 
 const SupportGroupSection = ({ setActiveSection }) => {
   const itemVariants = {
@@ -27,7 +28,7 @@ const SupportGroupSection = ({ setActiveSection }) => {
             <img 
               alt="Grupo de mujeres apoyándose mutuamente en un círculo"
               className="rounded-xl shadow-xl w-full object-cover aspect-video"
-             src="https://images.unsplash.com/photo-1626455935435-7208073e6fbb" />
+             src={AmigaNoEstasSola} />
           </motion.div>
           <motion.div
             initial="hidden"
@@ -43,7 +44,7 @@ const SupportGroupSection = ({ setActiveSection }) => {
               Grupo de Apoyo: "Amiga, no estás sola"
             </motion.h2>
             <motion.p variants={itemVariants} className="text-lg text-foreground mb-6">
-              Un espacio de acompañamiento psicoeducativo para mujeres, activo desde enero de 2021. Aquí exploramos temas cruciales como los tipos de violencia, el fortalecimiento del empoderamiento emocional y el desarrollo del amor propio.
+              Un espacio de acompañamiento psicoeducativo para mujeres, activo desde enero de 2022. Aquí exploramos temas cruciales como los tipos de violencia, el fortalecimiento del empoderamiento emocional y el desarrollo del amor propio.
             </motion.p>
             <motion.p variants={itemVariants} className="text-lg text-foreground mb-8">
               Juntas creamos un ambiente seguro y de confianza para crecer, aprender y sanar. Si buscas una comunidad que te entienda y te impulse, este es tu lugar.

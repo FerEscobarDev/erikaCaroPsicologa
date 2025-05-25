@@ -1,5 +1,5 @@
 import React from 'react';
-import { Instagram, Facebook, Youtube } from 'lucide-react';
+import {Instagram, Facebook, Linkedin} from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -23,14 +23,14 @@ const Footer = () => {
           <div>
             <span className="font-semibold text-primary-teal-dark mb-2 block">Redes Sociales</span>
             <div className="flex justify-center md:justify-start space-x-4">
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram de Erika Caro" className="text-primary-teal-dark hover:text-accent-purple-mid transition-colors">
+              <a href="https://www.linkedin.com/in/erikacaro/" target="_blank" rel="noopener noreferrer" aria-label="Linkedin de Erika Caro" className="text-primary-teal-dark hover:text-accent-purple-mid transition-colors">
+                <Linkedin size={24} />
+              </a>
+              <a href="https://www.instagram.com/psic.erikacaro/#" target="_blank" rel="noopener noreferrer" aria-label="Instagram de Erika Caro" className="text-primary-teal-dark hover:text-accent-purple-mid transition-colors">
                 <Instagram size={24} />
               </a>
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook de Erika Caro" className="text-primary-teal-dark hover:text-accent-purple-mid transition-colors">
+              <a href="https://www.facebook.com/people/Erika-Caro-Psic%C3%B3loga/61552588447493/" target="_blank" rel="noopener noreferrer" aria-label="Facebook de Erika Caro" className="text-primary-teal-dark hover:text-accent-purple-mid transition-colors">
                 <Facebook size={24} />
-              </a>
-              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="Youtube de Erika Caro" className="text-primary-teal-dark hover:text-accent-purple-mid transition-colors">
-                <Youtube size={24} />
               </a>
             </div>
           </div>

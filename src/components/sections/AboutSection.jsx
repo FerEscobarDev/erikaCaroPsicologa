@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Brain, Heart, Users, BookOpen } from 'lucide-react';
+import {Hero_2} from "@assets";
 
 const AboutSection = () => {
   const itemVariants = {
@@ -36,7 +37,7 @@ const AboutSection = () => {
             <img 
               alt="Erika Caro en un entorno profesional y acogedor"
               className="rounded-lg shadow-xl w-full max-w-md object-cover aspect-[4/5]"
-             src="https://images.unsplash.com/photo-1612944095914-33fd0a85fcfc" />
+             src={Hero_2} />
           </motion.div>
           <motion.div
             initial="hidden"

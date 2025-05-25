@@ -2,18 +2,24 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
-import { Mail, Phone, MapPin, Instagram, Facebook, Send } from 'lucide-react';
+import {Mail, Phone, MapPin, Instagram, Facebook, Send, Linkedin} from 'lucide-react';
 
 const ContactSection = () => {
   const { toast } = useToast();
 
   const handleContactSubmit = (e) => {
     e.preventDefault();
+    // toast({
+    //   title: "Mensaje Enviado",
+    //   description: "Gracias por tu mensaje, Erika se pondrá en contacto contigo pronto.",
+    //   variant: "default",
+    //   className: "bg-primary-teal-mid text-white",
+    // });
     toast({
-      title: "Mensaje Enviado",
-      description: "Gracias por tu mensaje, Erika se pondrá en contacto contigo pronto.",
+      title: "Mensaje No Enviado",
+      description: "En este momento tu mensaje no pudo ser enviado.",
       variant: "default",
-      className: "bg-primary-teal-mid text-white",
+      className: "bg-red-500 text-white",
     });
     e.target.reset();
   };
@@ -83,31 +89,35 @@ const ContactSection = () => {
                   <Mail size={22} className="text-accent-purple-mid mr-4" />
                   <div>
                     <span className="font-medium text-foreground block">Correo Electrónico</span>
-                    <a href="mailto:erika.caro@ejemplo.com" className="text-primary-teal-mid hover:text-accent-purple-dark transition-colors">erika.caro@ejemplo.com</a>
+                    <a href="mailto:desarrollohumano@erikacaropsicologa.com" className="text-primary-teal-mid hover:text-accent-purple-dark transition-colors">desarrollohumano@erikacaropsicologa.com</a>
                   </div>
                 </div>
                 <div className="flex items-center">
                   <Phone size={22} className="text-accent-purple-mid mr-4" />
                   <div>
                     <span className="font-medium text-foreground block">WhatsApp</span>
-                    <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer" className="text-primary-teal-mid hover:text-accent-purple-dark transition-colors">+1 (234) 567-890</a>
+                    <a href="https://api.whatsapp.com/send?phone=573243874221&text=Hola%20Erika%2C%20vi%20tu%20p%C3%A1gina%20web%20y%20me%20gustar%C3%ADa%20agendar%20una%20sesi%C3%B3n%20contigo.%20%C2%BFPodr%C3%ADas%20brindarme%20informaci%C3%B3n%20sobre%20la%20disponibilidad%20y%20el%20proceso%20para%20reservar%3F%20%C2%A1Gracias%21
+" target="_blank" rel="noopener noreferrer" className="text-primary-teal-mid hover:text-accent-purple-dark transition-colors">+57 3243874221</a>
                   </div>
                 </div>
                 <div className="flex items-center">
                   <MapPin size={22} className="text-accent-purple-mid mr-4" />
                   <div>
                     <span className="font-medium text-foreground block">Atención</span>
-                    <p className="text-foreground">Presencial (Bogotá, Colombia) y Online</p>
+                    <p className="text-foreground">Online</p>
                   </div>
                 </div>
               </div>
               <div className="mt-8 pt-6 border-t border-gray-200">
                 <span className="font-medium text-foreground block mb-3">Sígueme en Redes</span>
                 <div className="flex space-x-4">
-                  <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram de Erika Caro" className="p-2 bg-primary-teal-lighter rounded-full text-primary-teal-dark hover:bg-accent-purple-lighter hover:text-accent-purple-dark transition-colors">
+                  <a href="https://www.linkedin.com/in/erikacaro/" target="_blank" rel="noopener noreferrer" aria-label="Linkedin de Erika Caro" className="p-2 bg-primary-teal-lighter rounded-full text-primary-teal-dark hover:bg-accent-purple-lighter hover:text-accent-purple-dark transition-colors">
+                    <Linkedin size={24} />
+                  </a>
+                  <a href="https://www.instagram.com/psic.erikacaro/#" target="_blank" rel="noopener noreferrer" aria-label="Instagram de Erika Caro" className="p-2 bg-primary-teal-lighter rounded-full text-primary-teal-dark hover:bg-accent-purple-lighter hover:text-accent-purple-dark transition-colors">
                     <Instagram size={24} />
                   </a>
-                  <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook de Erika Caro" className="p-2 bg-primary-teal-lighter rounded-full text-primary-teal-dark hover:bg-accent-purple-lighter hover:text-accent-purple-dark transition-colors">
+                  <a href="https://www.facebook.com/people/Erika-Caro-Psic%C3%B3loga/61552588447493/" target="_blank" rel="noopener noreferrer" aria-label="Facebook de Erika Caro" className="p-2 bg-primary-teal-lighter rounded-full text-primary-teal-dark hover:bg-accent-purple-lighter hover:text-accent-purple-dark transition-colors">
                     <Facebook size={24} />
                   </a>
                 </div>
@@ -116,7 +126,7 @@ const ContactSection = () => {
             <Button 
               size="lg" 
               className="w-full bg-primary-teal-mid hover:bg-primary-teal-dark text-white rounded-full text-lg py-4 shadow-lg"
-              onClick={() => window.open('https://calendly.com/erikacaro', '_blank')}
+              onClick={() => window.open('https://calendly.com/erikacaropsi-qhk/60min', '_blank')}
             >
               Agendar Cita Vía Calendly
             </Button>

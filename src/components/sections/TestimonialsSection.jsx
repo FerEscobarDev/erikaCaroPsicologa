@@ -5,19 +5,20 @@ import { Card, CardContent } from "@/components/ui/card";
 
 const testimonials = [
   {
-    quote: "Gracias a Erika comprendí mi ansiedad y aprendí a manejarla con más tranquilidad. Su empatía y profesionalismo fueron clave.",
-    name: "Ana G.",
-    avatarText: "AG"
+    quote: "Una mujer hecha para la bondad guiada\n" +
+        "Por su corazón que se dedica y esmera en el servicio por los demás llega más lejos de sus capacidades no solo es una profesional con características hermosas si no una mujer que sabe llegar al corazón alma y mente de quienes le buscamos a través de su gran profesión",
+    name: "Mauricio Puerta",
+    avatarText: "MP"
   },
   {
-    quote: "El bootcamp me dio claridad y herramientas prácticas para iniciar como profesional. Erika es una excelente mentora.",
-    name: "Carlos M.",
-    avatarText: "CM"
+    quote: "Una de las mejores psicólogas que hay en el país, escucha muy bien tus problemas, no se rinde hasta ver un buen resultado, y es lo mas importante para uno en salud mental, muchísimas gracias por el trato profesional, gracias de corazón",
+    name: "gavsor proline",
+    avatarText: "GP"
   },
   {
-    quote: "Recomiendo totalmente las sesiones con Erika. Me sentí escuchada y encontré nuevas perspectivas para mis problemas.",
-    name: "Laura P.",
-    avatarText: "LP"
+    quote: "Su enfoque profesional y empático ha sido fundamental en mi proceso de crecimiento. Sin duda, la recomiendo a quienes busquen apoyo y orientación psicológica. 💛🫶🏻🌻",
+    name: "paula andrea vasco",
+    avatarText: "PV"
   }
 ];
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
+import {BackgroundHeader, Hero_1} from '@assets'
 
 const HeroSection = ({ setActiveSection }) => {
   const scrollToContacto = () => {
@@ -15,7 +16,7 @@ const HeroSection = ({ setActiveSection }) => {
         <img 
           alt="Fondo abstracto con formas suaves en tonos pastel"
           className="w-full h-full object-cover"
-         src="https://images.unsplash.com/photo-1586809764311-090bc6068916" />
+         src={ BackgroundHeader } />
       </div>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid md:grid-cols-2 gap-8 items-center">
@@ -50,7 +51,7 @@ const HeroSection = ({ setActiveSection }) => {
               <img 
                 alt="Retrato profesional de Erika Caro sonriendo"
                 className="relative w-full h-full object-cover rounded-full shadow-2xl border-4 border-white"
-               src="https://images.unsplash.com/photo-1665113361900-b9720957d41a" />
+               src={Hero_1} />
             </div>
           </motion.div>
         </div>
