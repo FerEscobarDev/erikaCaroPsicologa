@@ -47,13 +47,13 @@ const ContactSection = () => {
           </motion.p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-start">
+        <div className="grid lg:grid-cols-2 gap-12 items-start w-full max-w-full overflow-hidden">
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.7 }}
-            className="bg-white p-6 sm:p-8 rounded-xl shadow-xl"
+              className="w-full overflow-hidden bg-white p-6 sm:p-8 rounded-xl shadow-xl"
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.7 }}
           >
             <h3 className="text-2xl font-serif font-semibold text-primary-teal-dark mb-6">Formulario de Contacto</h3>
             <form onSubmit={handleContactSubmit} className="space-y-6">
@@ -76,13 +76,13 @@ const ContactSection = () => {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.7 }}
-            className="space-y-8"
+              className="w-full overflow-hidden space-y-8"
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.7 }}
           >
-            <div className="bg-white p-6 sm:p-8 rounded-xl shadow-xl">
+            <div className="bg-white p-6 sm:p-8 rounded-xl shadow-xl min-w-0 break-words">
               <h3 className="text-2xl font-serif font-semibold text-primary-teal-dark mb-6">Información Adicional</h3>
               <div className="space-y-5">
                 <div className="flex items-center">
