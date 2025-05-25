@@ -89,15 +89,15 @@ const ContactSection = () => {
                   <Mail size={22} className="text-accent-purple-mid mr-4" />
                   <div>
                     <span className="font-medium text-foreground block">Correo Electrónico</span>
-                    <a href="mailto:desarrollohumano@erikacaropsicologa.com" className="text-primary-teal-mid hover:text-accent-purple-dark transition-colors">desarrollohumano@erikacaropsicologa.com</a>
+                    <a href="mailto:desarrollohumano@erikacaropsicologa.com" className="text-primary-teal-mid hover:text-accent-purple-dark transition-colors break-all">desarrollohumano@erikacaropsicologa.com</a>
                   </div>
                 </div>
                 <div className="flex items-center">
                   <Phone size={22} className="text-accent-purple-mid mr-4" />
                   <div>
                     <span className="font-medium text-foreground block">WhatsApp</span>
-                    <a href="https://api.whatsapp.com/send?phone=573243874221&text=Hola%20Erika%2C%20vi%20tu%20p%C3%A1gina%20web%20y%20me%20gustar%C3%ADa%20agendar%20una%20sesi%C3%B3n%20contigo.%20%C2%BFPodr%C3%ADas%20brindarme%20informaci%C3%B3n%20sobre%20la%20disponibilidad%20y%20el%20proceso%20para%20reservar%3F%20%C2%A1Gracias%21
-" target="_blank" rel="noopener noreferrer" className="text-primary-teal-mid hover:text-accent-purple-dark transition-colors">+57 3243874221</a>
+                    <a href="https://api.whatsapp.com/send?phone=573243874221&text=Hola%20Erika%2C%20vi%20tu%20p%C3%A1gina%20web%20y%20me%20gustar%C3%ADa%20agendar%20una%20sesi%C3%B3n%20contigo.%20%C2%BFPodr%C3%ADas%20brindarme%20informaci%C3%B3n%20sobre%20la%20disponibilidad%20y%20el%20proceso%20para%20reservar%3F%20%C2%A1Gracias%21"
+                       target="_blank" rel="noopener noreferrer" className="text-primary-teal-mid hover:text-accent-purple-dark transition-colors">+57 3243874221</a>
                   </div>
                 </div>
                 <div className="flex items-center">
