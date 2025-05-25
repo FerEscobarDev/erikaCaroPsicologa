@@ -47,7 +47,7 @@ const TestimonialsSection = () => {
           className="text-center mb-12 sm:mb-16"
         >
           <motion.h2 variants={itemVariants} className="text-3xl sm:text-4xl font-serif font-bold text-primary-teal-dark mb-4">
-            Lo que dicen mis pacientes
+            Lo que dicen quienes han confiado en mí
           </motion.h2>
           <motion.p variants={itemVariants} className="text-lg text-foreground max-w-2xl mx-auto">
             Experiencias reales de personas que han transformado sus vidas.

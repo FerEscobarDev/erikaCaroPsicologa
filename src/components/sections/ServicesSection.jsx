@@ -55,7 +55,7 @@ const ServicesSection = ({ setActiveSection }) => {
             Mis Servicios
           </motion.h2>
           <motion.p variants={itemVariants} className="text-lg text-foreground max-w-2xl mx-auto">
-            Descubre cómo puedo ayudarte a alcanzar tu bienestar emocional y desarrollo personal.
+            Descubre cómo puedo ayudarte a alcanzar tu bienestar emocional y desarrollo personal y profesional.
           </motion.p>
         </motion.div>
 

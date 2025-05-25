@@ -46,9 +46,9 @@ const ContactSection = () => {
             Estoy aquí para ayudarte. Elige la forma de contacto que prefieras.
           </motion.p>
         </motion.div>
-
-        <div className="grid lg:grid-cols-2 gap-12 items-start w-full max-w-full overflow-hidden">
-          <motion.div
+        
+        <div className="grid lg:grid-cols-4 gap-12 items-center w-full max-w-full overflow-hidden">
+          {/* <motion.div
               className="w-full overflow-hidden bg-white p-6 sm:p-8 rounded-xl shadow-xl"
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -73,10 +73,10 @@ const ContactSection = () => {
                 Enviar Mensaje <Send size={18} className="ml-2" />
               </Button>
             </form>
-          </motion.div>
+          </motion.div> */}
 
           <motion.div
-              className="w-full overflow-hidden space-y-8"
+              className="lg:col-span-2 lg:col-start-2 w-full overflow-hidden space-y-8"
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, amount: 0.2 }}

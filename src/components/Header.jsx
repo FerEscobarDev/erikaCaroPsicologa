@@ -11,7 +11,7 @@ const Header = ({ sections, activeSection, setActiveSection }) => {
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
-      
+
       let currentSection = '';
       sections.forEach(sectionId => {
         const sectionElement = document.getElementById(sectionId);
@@ -41,7 +41,7 @@ const Header = ({ sections, activeSection, setActiveSection }) => {
   };
 
   return (
-    <header className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white/90 shadow-lg backdrop-blur-md' : 'bg-transparent'}`}>
+    <header className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white/70 shadow-lg' : 'bg-white/60'}`}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
         <motion.div
             initial={{opacity: 0, x: -20}}
@@ -105,7 +105,7 @@ const Header = ({ sections, activeSection, setActiveSection }) => {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-              className="fixed right-0 top-0 h-full w-3/4 max-w-xs bg-white shadow-xl p-6"
+              className="fixed right-0 top-0 h-full w-3/4 max-w-xs bg-white/90 shadow-xl p-6"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex justify-end mb-8">
