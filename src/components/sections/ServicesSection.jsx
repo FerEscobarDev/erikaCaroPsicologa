@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { User, Users, Briefcase, Zap, ArrowRight } from 'lucide-react';
+import { User, Users, Briefcase, Zap, ArrowRight, Heart, PawPrint as Paw } from 'lucide-react';
 
 const services = [
   {
@@ -28,6 +28,23 @@ const services = [
     description: "Dirigido a psicólogos recién egresados o profesionales con dificultades para ejercer, fortaleciendo sus habilidades.",
     cta: "Más información"
   },
+  {
+    icon: (
+      <div className="relative">
+        <Heart size={36} className="text-accent-purple-mid" />
+        <Paw size={20} className="text-accent-purple-light absolute -bottom-1 -right-1" />
+      </div>
+    ),
+    title: "Certificado de Apoyo Emocional Asistido por Mascota",
+    description: "Reconoce y certifica el vínculo único con tu mascota a través de 4 sesiones psicológicas, incluyendo valoración, acompañamiento, certificado profesional y guía de autocuidado.",
+    features: [
+      "4 sesiones psicológicas en 2 meses",
+      "Certificado profesional",
+      "Guía de autocuidado asistido",
+      "Seguimiento emocional humanizado"
+    ],
+    cta: "Solicitar certificado"
+  }
 ];
 
 const ServicesSection = ({ setActiveSection }) => {
@@ -70,7 +87,9 @@ const ServicesSection = ({ setActiveSection }) => {
             <motion.div
               key={index}
               variants={itemVariants}
-              className="bg-white p-6 sm:p-8 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 flex flex-col"
+              className={`bg-white p-6 sm:p-8 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 flex flex-col ${
+                service.features ? 'md:col-span-2' : ''
+              }`}
             >
               <div className="flex items-center mb-4">
                 <div className="p-3 rounded-full bg-accent-purple-lighter mr-4">
@@ -79,6 +98,16 @@ const ServicesSection = ({ setActiveSection }) => {
                 <h3 className="text-xl sm:text-2xl font-serif font-semibold text-primary-teal-dark">{service.title}</h3>
               </div>
               <p className="text-foreground mb-6 flex-grow">{service.description}</p>
+              {service.features && (
+                <div className="grid sm:grid-cols-2 gap-4 mb-6">
+                  {service.features.map((feature, idx) => (
+                    <div key={idx} className="flex items-center space-x-2">
+                      <Paw size={16} className="text-accent-purple-mid" />
+                      <span className="text-foreground">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
               <Button 
                 variant="outline" 
                 className="mt-auto border-primary-teal-mid text-primary-teal-mid hover:bg-primary-teal-mid hover:text-white w-full sm:w-auto self-start rounded-full"
