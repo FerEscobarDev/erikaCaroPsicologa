@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
-import {Mail, Phone, MapPin, Instagram, Facebook, Send, Linkedin} from 'lucide-react';
+import { Mail, Phone, MapPin, Instagram, Facebook, Send, Linkedin } from 'lucide-react';
 
 const ContactSection = () => {
   const { toast } = useToast();
@@ -46,7 +46,7 @@ const ContactSection = () => {
             Estoy aquí para ayudarte. Elige la forma de contacto que prefieras.
           </motion.p>
         </motion.div>
-        
+
         <div className="grid lg:grid-cols-4 gap-12 items-center w-full max-w-full overflow-hidden">
           {/* <motion.div
               className="w-full overflow-hidden bg-white p-6 sm:p-8 rounded-xl shadow-xl"
@@ -76,11 +76,11 @@ const ContactSection = () => {
           </motion.div> */}
 
           <motion.div
-              className="lg:col-span-2 lg:col-start-2 w-full overflow-hidden space-y-8"
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.7 }}
+            className="lg:col-span-2 lg:col-start-2 w-full overflow-hidden space-y-8"
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.7 }}
           >
             <div className="bg-white p-6 sm:p-8 rounded-xl shadow-xl min-w-0 break-words">
               <h3 className="text-2xl font-serif font-semibold text-primary-teal-dark mb-6">Información Adicional</h3>
@@ -97,7 +97,7 @@ const ContactSection = () => {
                   <div>
                     <span className="font-medium text-foreground block">WhatsApp</span>
                     <a href="https://api.whatsapp.com/send?phone=573243874221&text=Hola%20Erika%2C%20vi%20tu%20p%C3%A1gina%20web%20y%20me%20gustar%C3%ADa%20agendar%20una%20sesi%C3%B3n%20contigo.%20%C2%BFPodr%C3%ADas%20brindarme%20informaci%C3%B3n%20sobre%20la%20disponibilidad%20y%20el%20proceso%20para%20reservar%3F%20%C2%A1Gracias%21"
-                       target="_blank" rel="noopener noreferrer" className="text-primary-teal-mid hover:text-accent-purple-dark transition-colors">+57 3243874221</a>
+                      target="_blank" rel="noopener noreferrer" className="text-primary-teal-mid hover:text-accent-purple-dark transition-colors">+57 3243874221</a>
                   </div>
                 </div>
                 <div className="flex items-center">
@@ -123,10 +123,10 @@ const ContactSection = () => {
                 </div>
               </div>
             </div>
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               className="w-full bg-primary-teal-mid hover:bg-primary-teal-dark text-white rounded-full text-lg py-4 shadow-lg"
-              onClick={() => window.open('https://calendly.com/erikacaropsi-qhk/60min', '_blank')}
+              onClick={() => window.open('https://calendly.com/erikacaropsi-qhk/55', '_blank')}
             >
               Agendar Cita Vía Calendly
             </Button>
