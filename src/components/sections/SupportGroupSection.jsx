@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { HeartHandshake, ArrowRight } from 'lucide-react';
 import {AmigaNoEstasSola} from "@assets";
+import { WHATSAPP_MESSAGE_SUPPORT_GROUP, whatsappLink } from '@/constants/contact';
 
 const SupportGroupSection = ({ setActiveSection }) => {
   const itemVariants = {
@@ -51,7 +52,7 @@ const SupportGroupSection = ({ setActiveSection }) => {
             </motion.p>
             <motion.div variants={itemVariants}>
               <a 
-                href="https://api.whatsapp.com/send?phone=573243874221&text=Hola%20Erika%2C%20me%20gustar%C3%ADa%20unirme%20al%20grupo%20de%20apoyo%20'Amiga%2C%20no%20est%C3%A1s%20sola'.%20%C2%BFMe%20puedes%20dar%20m%C3%A1s%20informaci%C3%B3n%3F"
+                href={whatsappLink(WHATSAPP_MESSAGE_SUPPORT_GROUP)}
                 target="_blank"
                 rel="noopener noreferrer"
               >

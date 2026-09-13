@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { Mail, Phone, MapPin, Instagram, Facebook, Send, Linkedin } from 'lucide-react';
+import { CALENDLY_URL, CONTACT_EMAIL, WHATSAPP_DISPLAY, WHATSAPP_MESSAGE_SESSION, whatsappLink } from '@/constants/contact';
 
 const ContactSection = () => {
   const { toast } = useToast();
@@ -89,15 +90,15 @@ const ContactSection = () => {
                   <Mail size={22} className="text-accent-purple-mid mr-4" />
                   <div>
                     <span className="font-medium text-foreground block">Correo Electrónico</span>
-                    <a href="mailto:desarrollohumano@erikacaropsicologa.com" className="text-primary-teal-mid hover:text-accent-purple-dark transition-colors break-all">desarrollohumano@erikacaropsicologa.com</a>
+                    <a href={`mailto:${CONTACT_EMAIL}`} className="text-primary-teal-mid hover:text-accent-purple-dark transition-colors break-all">{CONTACT_EMAIL}</a>
                   </div>
                 </div>
                 <div className="flex items-center">
                   <Phone size={22} className="text-accent-purple-mid mr-4" />
                   <div>
                     <span className="font-medium text-foreground block">WhatsApp</span>
-                    <a href="https://api.whatsapp.com/send?phone=573243874221&text=Hola%20Erika%2C%20vi%20tu%20p%C3%A1gina%20web%20y%20me%20gustar%C3%ADa%20agendar%20una%20sesi%C3%B3n%20contigo.%20%C2%BFPodr%C3%ADas%20brindarme%20informaci%C3%B3n%20sobre%20la%20disponibilidad%20y%20el%20proceso%20para%20reservar%3F%20%C2%A1Gracias%21"
-                      target="_blank" rel="noopener noreferrer" className="text-primary-teal-mid hover:text-accent-purple-dark transition-colors">+57 3243874221</a>
+                    <a href={whatsappLink(WHATSAPP_MESSAGE_SESSION)}
+                      target="_blank" rel="noopener noreferrer" className="text-primary-teal-mid hover:text-accent-purple-dark transition-colors">{WHATSAPP_DISPLAY}</a>
                   </div>
                 </div>
                 <div className="flex items-center">
@@ -126,7 +127,7 @@ const ContactSection = () => {
             <Button
               size="lg"
               className="w-full bg-primary-teal-mid hover:bg-primary-teal-dark text-white rounded-full text-lg py-4 shadow-lg"
-              onClick={() => window.open('https://calendly.com/erikacaropsi-qhk/55', '_blank')}
+              onClick={() => window.open(CALENDLY_URL, '_blank')}
             >
               Agendar Cita Vía Calendly
             </Button>
