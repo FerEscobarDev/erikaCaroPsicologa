@@ -1,0 +1,731 @@
+# Contrato de API — fuente de verdad machine-readable.
+# Proyecto: Erika Caro Psicóloga. Generado en la Fase 2 (architecture) el 2026-09-11.
+# Derivado de la sección "Capacidades de Frontera" de docs/01-requirements/business_requirements.md.
+#
+# Idioma: identificadores en INGLÉS por conventions.md §8. La prosa descriptiva va en español.
+#
+# Reglas:
+#  - Todo path lleva `operationId` único y estable (es el identificador que citan los specs).
+#  - Reusar shapes vía components/schemas y components/responses — nada inline repetido.
+#  - Un envelope de error único en components/schemas/Error.
+#  - Cambiar un operationId/método/path existente = breaking change → requiere ADR.
+
+openapi: 3.1.0
+
+info:
+  title: "Erika Caro Psicologa API"
+  version: "0.1.0"
+  description: |
+    Contrato de la interfaz backend↔frontend. Fuente de verdad.
+
+    Dos audiencias: el público (visitante y verificador externo, sin identificación) y
+    la administradora (Erika, única persona autorizada — RN-004, FA-007).
+
+    ADVERTENCIA SOBRE LA VERIFICACIÓN PÚBLICA: el shape de VerificationResult es
+    provisional y depende de la decisión abierta D-2 (architecture.md §7). Hoy modela
+    los tres estados por separado. Si se decide que revoked y expired deben ser
+    indistinguibles de "no existe", cambia el shape y es un breaking change con ADR.
+
+servers:
+  - url: "/api/v1"
+    description: |
+      Mismo origen que el sitio público, bajo el prefijo /api. Es una CONDICIÓN del
+      despliegue, no un detalle: el esquema de autenticación usa una cookie HttpOnly,
+      que no sobrevive a orígenes distintos sin CORS con credenciales. ADR-002 despliega
+      dos apps Dokploy; deben quedar tras el mismo origen. Ver architecture.md §3.
+
+components:
+  securitySchemes:
+    sessionCookie:
+      type: apiKey
+      in: cookie
+      name: session
+      description: "Cookie HttpOnly emitida por verifyAccessCode. Sin contraseñas (ADR-002)."
+
+  schemas:
+    Error:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: string
+          description: "Código de error de negocio estable. Ninguna capa inventa valores fuera de esta enumeración (architecture.md §5.3)."
+          enum:
+            - INVALID_DATA
+            - SESSION_REQUIRED
+            - INVALID_ACCESS_CODE
+            - TOO_MANY_ACCESS_ATTEMPTS
+            - RATE_LIMITED
+            - CERTIFICATE_NOT_FOUND
+            - CERTIFICATE_NOT_DRAFT
+            - CERTIFICATE_NOT_ISSUED
+            - CERTIFICATE_NOT_REVOCABLE
+            - INVALID_FILE
+            - FILE_MISSING_CODE
+            - DELIVERY_FAILED
+            - ARTICLE_NOT_FOUND
+            - ARTICLE_SLUG_TAKEN
+            - INTERNAL_ERROR
+        message:
+          type: string
+          description: "Texto para la persona. Nunca incluye datos de un titular ni detalles internos."
+        details:
+          type: object
+          additionalProperties: true
+
+    CertificateType:
+      type: object
+      required: [slug, name, validityMonths]
+      properties:
+        slug:
+          type: string
+          enum: [emotional-support-animal, attendance, care-record, assessment]
+          description: "Los cuatro tipos de RN-011."
+        name:
+          type: string
+          description: "Nombre legible, en español, para mostrar a Erika."
+        validityMonths:
+          type: [integer, "null"]
+          minimum: 1
+          description: "Nulo = ese tipo no vence. Los valores concretos dependen de la decisión abierta D-1."
+
+    NewCertificate:
+      type: object
+      required: [typeSlug, holderName, holderEmail]
+      properties:
+        typeSlug:
+          type: string
+          enum: [emotional-support-animal, attendance, care-record, assessment]
+        holderName: { type: string, minLength: 1, maxLength: 200 }
+        holderEmail: { type: string, format: email }
+      description: "RN-007 acota lo que se puede guardar: nada clínico, ningún motivo de emisión."
+
+    CertificateDraft:
+      type: object
+      required: [id, code, verificationUrl, qrSvg, status]
+      properties:
+        id: { type: string, format: uuid }
+        code:
+          type: string
+          description: "Código no adivinable, de fuente aleatoria criptográfica (RN-001). Erika lo imprime en su diseño."
+        verificationUrl:
+          type: string
+          format: uri
+          description: |
+            Lo que codifica el QR: la URL de la pantalla pública de verificación con este código.
+            La API la construye desde configuración. IRREVERSIBLE una vez impresa en un PDF —
+            cambiar esa ruta invalida los QR ya emitidos (architecture.md §3 y §7).
+        qrSvg:
+          type: string
+          description: "El QR como SVG, listo para pegar en el diseño del PDF."
+        status:
+          type: string
+          const: draft
+      description: "RN-005: el código y el QR existen ANTES de que el PDF se diseñe. Un borrador no es verificable."
+
+    Certificate:
+      type: object
+      required: [id, code, typeSlug, holderName, holderEmail, status, verificationUrl, qrSvg]
+      properties:
+        id: { type: string, format: uuid }
+        code: { type: string }
+        typeSlug: { type: string }
+        holderName: { type: string }
+        holderEmail: { type: string, format: email }
+        status:
+          type: string
+          enum: [draft, issued, revoked]
+          description: "`expired` NO se almacena: se deriva de expiresAt (architecture.md §4)."
+        verificationUrl:
+          type: string
+          format: uri
+          description: "Igual que en CertificateDraft. Se reexpone para que un borrador cuya pantalla se cerró pueda recuperar su QR."
+        qrSvg:
+          type: string
+          description: "Igual que en CertificateDraft. Solo para Erika: nunca viaja en la verificación pública."
+        issuedAt: { type: [string, "null"], format: date-time }
+        expiresAt: { type: [string, "null"], format: date-time }
+        revocationReason: { type: [string, "null"] }
+        revokedAt: { type: [string, "null"], format: date-time }
+        lastDelivery:
+          oneOf:
+            - $ref: "#/components/schemas/CertificateDelivery"
+            - type: "null"
+          description: "Resultado del último intento de entrega. Es lo que hace visible CL-006."
+      description: "Vista completa. Solo para Erika: nunca se devuelve en la verificación pública."
+
+    CertificateDelivery:
+      type: object
+      required: [status, attemptedAt]
+      properties:
+        status: { type: string, enum: [sent, failed] }
+        attemptedAt: { type: string, format: date-time }
+        errorDetail: { type: [string, "null"] }
+
+    CertificateSummary:
+      type: object
+      required: [id, code, typeSlug, holderName, holderEmail, status]
+      properties:
+        id: { type: string, format: uuid }
+        code: { type: string }
+        typeSlug: { type: string }
+        holderName: { type: string }
+        holderEmail: { type: string, format: email }
+        status: { type: string, enum: [draft, issued, revoked] }
+        issuedAt: { type: [string, "null"], format: date-time }
+        expiresAt: { type: [string, "null"], format: date-time }
+        revokedAt: { type: [string, "null"], format: date-time }
+        lastDelivery:
+          oneOf:
+            - $ref: "#/components/schemas/CertificateDelivery"
+            - type: "null"
+      description: |
+        Vista de listado. Deliberadamente SIN verificationUrl ni qrSvg: un SVG por ítem
+        con size=100 haría de cada página de archivo una descarga innecesariamente pesada.
+        Quien necesite el QR abre el detalle (getCertificate).
+
+    CertificatePage:
+      type: object
+      required: [items, total, page, size]
+      properties:
+        items:
+          type: array
+          items: { $ref: "#/components/schemas/CertificateSummary" }
+        total: { type: integer }
+        page: { type: integer }
+        size: { type: integer }
+
+    VerificationResult:
+      type: object
+      required: [status, holderName]
+      properties:
+        status:
+          type: string
+          enum: [valid, revoked, expired]
+          description: "Derivado: `valid` e `expired` salen del mismo Certificate.status = issued, según expiresAt."
+        holderName:
+          type: string
+          description: "RN-002 lo autoriza para que el verificador confirme que el certificado es de quien se lo entregó."
+        expiresAt:
+          type: [string, "null"]
+          format: date-time
+          description: "CL-003. Nulo cuando el tipo no vence."
+        revocationReason:
+          type: [string, "null"]
+          description: |
+            RN-006 / CL-002. Presente solo cuando status = revoked. Es el motivo de ANULACIÓN,
+            no el de emisión: RN-002 prohíbe el segundo, no el primero.
+      description: |
+        Lista CERRADA — architecture.md §6 enumera exactamente estos campos y ninguna regla
+        autoriza uno más. `revokedAt` existe en Certificate (vista de Erika) pero NO aquí:
+        la fecha de anulación no la autoriza RN-002 ni la exige CL-002.
+        Lo único que se expone públicamente. Nunca el PDF, nunca el motivo de emisión, nunca
+        el correo del titular, nunca la existencia de otros certificados suyos (CL-007).
+        Shape provisional — depende de D-2.
+
+    AccessCodeRequest:
+      type: object
+      required: [email]
+      properties:
+        email: { type: string, format: email }
+
+    AccessCodeVerification:
+      type: object
+      required: [email, code]
+      properties:
+        email: { type: string, format: email }
+        code: { type: string, minLength: 6, maxLength: 6 }
+
+    Session:
+      type: object
+      required: [email, expiresAt]
+      properties:
+        email: { type: string, format: email }
+        expiresAt: { type: string, format: date-time }
+
+    Revocation:
+      type: object
+      required: [reason]
+      properties:
+        reason:
+          type: string
+          minLength: 1
+          maxLength: 300
+          description: "Visible a quien verifique (RN-006). No debe contener datos clínicos."
+
+    ArticleSummary:
+      type: object
+      required: [slug, title, summary, category, tags, publishedAt]
+      properties:
+        slug: { type: string }
+        title: { type: string }
+        summary: { type: string }
+        category: { type: string }
+        tags:
+          type: array
+          items: { type: string }
+        imageUrl: { type: [string, "null"], format: uri }
+        altText: { type: [string, "null"] }
+        publishedAt: { type: string, format: date-time }
+
+    Article:
+      allOf:
+        - $ref: "#/components/schemas/ArticleSummary"
+        - type: object
+          required: [content]
+          properties:
+            content: { type: string }
+
+    ArticlePage:
+      type: object
+      required: [items, total, page, size]
+      properties:
+        items:
+          type: array
+          items: { $ref: "#/components/schemas/ArticleSummary" }
+        total: { type: integer }
+        page: { type: integer }
+        size: { type: integer }
+
+    NewArticle:
+      type: object
+      required: [title, summary, content, category]
+      properties:
+        title: { type: string, minLength: 1, maxLength: 200 }
+        summary: { type: string, minLength: 1, maxLength: 500 }
+        content: { type: string, minLength: 1 }
+        category: { type: string, minLength: 1 }
+        tags:
+          type: array
+          items: { type: string }
+        imageUrl: { type: [string, "null"], format: uri }
+        altText: { type: [string, "null"] }
+        slug:
+          type: string
+          pattern: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          description: |
+            Opcional. Si se omite, la API lo deriva del `title` (minúsculas, sin acentos,
+            espacios a guiones). Es la clave única del artículo (architecture.md §4) y lo
+            que colisiona en ARTICLE_SLUG_TAKEN.
+
+    ContactMessage:
+      type: object
+      required: [name, email, message]
+      properties:
+        name: { type: string, minLength: 1, maxLength: 200 }
+        email: { type: string, format: email }
+        message: { type: string, minLength: 1, maxLength: 5000 }
+      description: "No se persiste (architecture.md §2.4). Se entrega al correo de Erika y se descarta."
+
+  responses:
+    BadRequest:
+      description: "Datos inválidos. El `code` concreto depende de la operación — ver su description."
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    Unauthorized:
+      description: No autenticado o sesión expirada (SESSION_REQUIRED).
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    InvalidAccessCode:
+      description: Código incorrecto, expirado o ya usado (INVALID_ACCESS_CODE).
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    NotFound:
+      description: "Recurso no encontrado. El `code` concreto depende de la operación."
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    Conflict:
+      description: "El estado del recurso no permite la operación. El `code` concreto depende de la operación."
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    TooManyRequests:
+      description: "Demasiadas peticiones. El `code` concreto depende de la operación — ver su description."
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    DeliveryFailed:
+      description: La entrega por correo falló (DELIVERY_FAILED).
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    InternalError:
+      description: |
+        Fallo de infraestructura, no recuperable por quien llama (INTERNAL_ERROR).
+        Respuesta genérica: el detalle se loggea completo y nunca viaja (architecture.md §5.3).
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+
+security:
+  - sessionCookie: []
+
+paths:
+  # ======================= access =======================
+  /access/codes:
+    post:
+      operationId: requestAccessCode
+      summary: Envía un código de un solo uso al correo autorizado.
+      description: |
+        Responde igual exista o no la dirección, para no revelar cuál es la autorizada
+        (architecture.md §5.1). NO es idempotente: cada llamada genera un código nuevo
+        e invalida el anterior. HU-CERT-001.
+      x-error-codes: "Códigos: 422 INVALID_DATA · 429 RATE_LIMITED (límite de envíos)."
+      security: []
+      tags: [access]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/AccessCodeRequest" }
+      responses:
+        "500": { $ref: "#/components/responses/InternalError" }
+        "202":
+          description: Solicitud aceptada. No revela si la dirección está autorizada.
+        "422": { $ref: "#/components/responses/BadRequest" }
+        "429": { $ref: "#/components/responses/TooManyRequests" }
+
+  /access/sessions:
+    post:
+      operationId: verifyAccessCode
+      summary: Canjea el código por una sesión.
+      description: "Emite la cookie HttpOnly de sesión. HU-CERT-001."
+      x-error-codes: "Códigos: 401 INVALID_ACCESS_CODE · 422 INVALID_DATA · 429 TOO_MANY_ACCESS_ATTEMPTS (cuenta AccessCode.attempts)."
+      security: []
+      tags: [access]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/AccessCodeVerification" }
+      responses:
+        "500": { $ref: "#/components/responses/InternalError" }
+        "201":
+          description: Sesión creada. La cookie viaja en Set-Cookie.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Session" }
+        "401": { $ref: "#/components/responses/InvalidAccessCode" }
+        "422": { $ref: "#/components/responses/BadRequest" }
+        "429": { $ref: "#/components/responses/TooManyRequests" }
+
+  /access/session:
+    get:
+      operationId: getSession
+      summary: Estado de la sesión actual.
+      description: "Permite a la zona privada saber si sigue identificada. HU-CERT-001."
+      x-error-codes: "Códigos: 401 SESSION_REQUIRED."
+      tags: [access]
+      responses:
+        "500": { $ref: "#/components/responses/InternalError" }
+        "200":
+          description: Sesión vigente.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Session" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+    delete:
+      operationId: endSession
+      summary: Cierra la sesión actual.
+      description: "HU-CERT-001."
+      x-error-codes: "Códigos: 401 SESSION_REQUIRED."
+      tags: [access]
+      responses:
+        "500": { $ref: "#/components/responses/InternalError" }
+        "204":
+          description: Sesión cerrada.
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  # ==================== certificates ====================
+  /certificate-types:
+    get:
+      operationId: listCertificateTypes
+      summary: Tipos de certificado y su vigencia.
+      description: "Erika elige el tipo al registrar un certificado. HU-CERT-002."
+      x-error-codes: "Códigos: 401 SESSION_REQUIRED."
+      tags: [certificates]
+      responses:
+        "500": { $ref: "#/components/responses/InternalError" }
+        "200":
+          description: Lista de tipos.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/CertificateType" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /certificates:
+    post:
+      operationId: registerCertificate
+      summary: Registra un certificado y devuelve su código y su QR.
+      description: |
+        Primer paso de la emisión (RN-005): el certificado nace como borrador, no verificable,
+        y Erika recibe el código y el QR para incorporarlos a su diseño. HU-CERT-002.
+      x-error-codes: "Códigos: 401 SESSION_REQUIRED · 422 INVALID_DATA."
+      tags: [certificates]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/NewCertificate" }
+      responses:
+        "500": { $ref: "#/components/responses/InternalError" }
+        "201":
+          description: Borrador creado con su código y QR.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CertificateDraft" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "422": { $ref: "#/components/responses/BadRequest" }
+    get:
+      operationId: listCertificates
+      summary: Archivo de certificados emitidos.
+      description: "HU-CERT-008."
+      x-error-codes: "Códigos: 401 SESSION_REQUIRED."
+      tags: [certificates]
+      parameters:
+        - { name: search, in: query, required: false, schema: { type: string } }
+        - name: status
+          in: query
+          required: false
+          description: |
+            Filtro por estado. Incluye `expired`, que NO es un valor almacenado de
+            Certificate.status: la API lo resuelve como `issued` con expiresAt ya pasado
+            (architecture.md §4). La asimetría con el enum de Certificate es deliberada.
+          schema: { type: string, enum: [draft, issued, revoked, expired] }
+        - { name: page, in: query, required: false, schema: { type: integer, minimum: 1, default: 1 } }
+        - { name: size, in: query, required: false, schema: { type: integer, minimum: 1, maximum: 100, default: 20 } }
+      responses:
+        "500": { $ref: "#/components/responses/InternalError" }
+        "200":
+          description: Página de certificados.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CertificatePage" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /certificates/{id}:
+    get:
+      operationId: getCertificate
+      summary: Detalle de un certificado.
+      description: "HU-CERT-008."
+      x-error-codes: "Códigos: 401 SESSION_REQUIRED · 404 CERTIFICATE_NOT_FOUND."
+      tags: [certificates]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string, format: uuid } }
+      responses:
+        "500": { $ref: "#/components/responses/InternalError" }
+        "200":
+          description: Certificado.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Certificate" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /certificates/{id}/issuance:
+    post:
+      operationId: issueCertificate
+      summary: Sube el PDF diseñado y deja el certificado emitido.
+      description: |
+        Segundo paso de la emisión. Rechaza el archivo si no lleva impreso el código
+        (CL-005, FILE_MISSING_CODE). Al emitir, envía el PDF al correo del titular
+        (RN-008) y registra el resultado del intento (CL-006). HU-CERT-003.
+      x-error-codes: "Códigos: 401 SESSION_REQUIRED · 404 CERTIFICATE_NOT_FOUND · 409 CERTIFICATE_NOT_DRAFT · 422 FILE_MISSING_CODE o INVALID_FILE · 502 DELIVERY_FAILED."
+      tags: [certificates]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string, format: uuid } }
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              properties:
+                file: { type: string, format: binary, contentMediaType: application/pdf }
+      responses:
+        "500": { $ref: "#/components/responses/InternalError" }
+        "200":
+          description: Certificado emitido y entregado.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Certificate" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "409": { $ref: "#/components/responses/Conflict" }
+        "422": { $ref: "#/components/responses/BadRequest" }
+        "502": { $ref: "#/components/responses/DeliveryFailed" }
+
+  /certificates/{id}/file:
+    get:
+      operationId: downloadCertificate
+      summary: Descarga el PDF archivado.
+      description: |
+        Solo Erika (RN-009). Ninguna operación pública devuelve el PDF, ni siquiera al
+        titular (RN-010, FA-005). Un borrador no tiene archivo: responde 409
+        CERTIFICATE_NOT_ISSUED. HU-CERT-008.
+      x-error-codes: "Códigos: 401 SESSION_REQUIRED · 404 CERTIFICATE_NOT_FOUND · 409 CERTIFICATE_NOT_ISSUED."
+      tags: [certificates]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string, format: uuid } }
+      responses:
+        "500": { $ref: "#/components/responses/InternalError" }
+        "200":
+          description: El PDF.
+          content:
+            application/pdf:
+              schema: { type: string, format: binary }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "409": { $ref: "#/components/responses/Conflict" }
+
+  /certificates/{id}/revocation:
+    post:
+      operationId: revokeCertificate
+      summary: Anula un certificado emitido, con motivo visible.
+      description: |
+        El motivo queda visible a quien verifique (RN-006). Un borrador o un certificado
+        ya anulado no se puede anular (CERTIFICATE_NOT_REVOCABLE). HU-CERT-007.
+      x-error-codes: "Códigos: 401 SESSION_REQUIRED · 404 CERTIFICATE_NOT_FOUND · 409 CERTIFICATE_NOT_REVOCABLE · 422 INVALID_DATA."
+      tags: [certificates]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string, format: uuid } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/Revocation" }
+      responses:
+        "500": { $ref: "#/components/responses/InternalError" }
+        "200":
+          description: Certificado anulado.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Certificate" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "409": { $ref: "#/components/responses/Conflict" }
+        "422": { $ref: "#/components/responses/BadRequest" }
+
+  /verification/{code}:
+    get:
+      operationId: verifyCertificate
+      summary: Comprueba públicamente la autenticidad de un certificado.
+      description: |
+        Única lectura pública de certificados. Devuelve solo lo que RN-002 autoriza, más
+        el motivo de anulación (CL-002) o la fecha de vencimiento (CL-003) según el estado.
+        Un código inexistente, malformado, o correspondiente a un BORRADOR responde igual:
+        404 CERTIFICATE_NOT_FOUND, sin revelar cuál es el caso (CL-001). Limitada en
+        frecuencia para que probar códigos en masa no sirva de nada (CL-004).
+        Sirve las dos vías de HU-CERT-005 (QR) y HU-CERT-006 (código escrito): el QR
+        codifica la URL de la pantalla de verificación, que llama a esta misma operación.
+      x-error-codes: "Códigos: 404 CERTIFICATE_NOT_FOUND · 429 RATE_LIMITED."
+      security: []
+      tags: [certificates]
+      parameters:
+        - { name: code, in: path, required: true, schema: { type: string } }
+      responses:
+        "500": { $ref: "#/components/responses/InternalError" }
+        "200":
+          description: Certificado encontrado.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/VerificationResult" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "429": { $ref: "#/components/responses/TooManyRequests" }
+
+  # ======================= articles =====================
+  /articles:
+    get:
+      operationId: listArticles
+      summary: Artículos publicados, con búsqueda y filtros.
+      description: "Solo devuelve publicados. Lista vacía es una respuesta válida (CL-010). HU-BLOG-001."
+      x-error-codes: "Códigos: ninguno de negocio."
+      security: []
+      tags: [articles]
+      parameters:
+        - { name: search, in: query, required: false, schema: { type: string } }
+        - { name: category, in: query, required: false, schema: { type: string } }
+        - { name: tag, in: query, required: false, schema: { type: string } }
+        - { name: page, in: query, required: false, schema: { type: integer, minimum: 1, default: 1 } }
+        - { name: size, in: query, required: false, schema: { type: integer, minimum: 1, maximum: 50, default: 10 } }
+      responses:
+        "500": { $ref: "#/components/responses/InternalError" }
+        "200":
+          description: Página de artículos.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ArticlePage" }
+    post:
+      operationId: publishArticle
+      summary: Publica un artículo.
+      description: |
+        Erika publica sin intervención técnica (RN-018). El slug se deriva del título si
+        no se envía; si ya existe uno igual responde 409 ARTICLE_SLUG_TAKEN. HU-BLOG-003.
+      x-error-codes: "Códigos: 401 SESSION_REQUIRED · 409 ARTICLE_SLUG_TAKEN · 422 INVALID_DATA."
+      tags: [articles]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/NewArticle" }
+      responses:
+        "500": { $ref: "#/components/responses/InternalError" }
+        "201":
+          description: Artículo publicado.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Article" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "409": { $ref: "#/components/responses/Conflict" }
+        "422": { $ref: "#/components/responses/BadRequest" }
+
+  /articles/{slug}:
+    get:
+      operationId: getArticle
+      summary: Lee un artículo publicado.
+      description: "Un slug inexistente o no publicado responde 404 ARTICLE_NOT_FOUND. HU-BLOG-002."
+      x-error-codes: "Códigos: 404 ARTICLE_NOT_FOUND."
+      security: []
+      tags: [articles]
+      parameters:
+        - { name: slug, in: path, required: true, schema: { type: string } }
+      responses:
+        "500": { $ref: "#/components/responses/InternalError" }
+        "200":
+          description: El artículo.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Article" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  # ======================= contact ======================
+  /contact-messages:
+    post:
+      operationId: sendContactMessage
+      summary: Envía un mensaje a Erika desde el sitio.
+      description: |
+        Entrega al correo de Erika (RN-015) y descarta el mensaje: no se persiste.
+        Si la entrega falla, responde 502 DELIVERY_FAILED para que la pantalla pueda
+        ofrecer WhatsApp y el correo directo (RN-016). HU-CONTACT-001.
+      x-error-codes: "Códigos: 422 INVALID_DATA · 429 RATE_LIMITED · 502 DELIVERY_FAILED."
+      security: []
+      tags: [contact]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ContactMessage" }
+      responses:
+        "500": { $ref: "#/components/responses/InternalError" }
+        "202":
+          description: Mensaje entregado al correo de Erika.
+        "422": { $ref: "#/components/responses/BadRequest" }
+        "429": { $ref: "#/components/responses/TooManyRequests" }
+        "502": { $ref: "#/components/responses/DeliveryFailed" }

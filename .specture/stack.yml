@@ -1,0 +1,78 @@
+# Specture — Project Stack Configuration
+# This file is the SINGLE SOURCE OF TRUTH for the technical stack of the project.
+# All skills and agents read this file before generating code, plans, or reviews.
+# Edit through `/specture:setup` (mode: reconfigure) to keep validation and ADRs in sync.
+#
+# Adoptado desde código existente el 2026-09-11 — ver .specture/decisions/001-adopted-stack.md
+# Ampliado a full-stack el 2026-09-11 — ver .specture/decisions/002-backend-and-monorepo.md
+
+# --- Identity --------------------------------------------------------------
+project:
+  name: "Erika Caro Psicóloga"
+  slug: "erika_caro_psicologa"
+  type: "hybrid"                # web pública + API propia
+  description: "Presencia profesional de la psicóloga Erika Andrea Caro: sitio público que da credibilidad y capta consultas, más emisión y verificación pública de certificados que ella expide."
+
+# --- Backend ---------------------------------------------------------------
+backend:
+  language: "javascript"        # mismo lenguaje que el frontend — ver ADR-002
+  runtime: "node 20"            # alineado con .nvmrc (20.19.1)
+  framework: "express"
+  package_manager: "npm"
+  testing_framework: "vitest"
+
+# --- Database & Persistence ------------------------------------------------
+database:
+  primary: "postgresql"         # contenedor gestionado por Dokploy junto a la app
+  orm_or_driver: "prisma"       # migraciones versionadas — los certificados emitidos no se pueden perder
+  cache: "none"
+  search: "none"
+
+# --- Frontend --------------------------------------------------------------
+frontend:
+  framework: "react"            # React 18.2, build con Vite 4
+  language: "javascript"        # JSX sin TypeScript; @types/* presentes pero sin tsconfig
+  ui_library: "shadcn"          # Radix UI + class-variance-authority + tailwind-merge
+  styling: "tailwind"           # Tailwind 3.3 + tailwindcss-animate + tokens HSL en src/index.css
+  state_management: "none"      # estado local por componente; react-router-dom para navegación (ADR-002)
+  testing_framework: "vitest"   # adoptado en setup — aún NO instalado, se instala en el epic de Foundation
+  ui_defined: true              # hay UI real en producción → Phase 3 hace ingeniería inversa del design system
+  design_channel: "none"
+  design_project_id: ""
+
+# --- API Contract ----------------------------------------------------------
+api:
+  style: "rest"
+  contract_file: "docs/02-architecture/api-contract.openapi.yaml"
+
+# --- Architecture Pattern --------------------------------------------------
+architecture:
+  pattern: "layered"            # API por capas (ruta → servicio → repositorio); web por capas de presentación
+  module_strategy: "by-feature" # la API se organiza por feature (certificados, blog, contacto, acceso);
+                                # el frontend conserva su organización por capas — ver conventions.md §2
+  uses_ddd: false
+  uses_cqrs: false
+  uses_event_driven: false
+
+# --- Structure (layout de carpetas raíz por app) ---------------------------
+structure:
+  root_layout: by-app-suffix    # adoptado en ADR-002; el frontend actual se mueve a su carpeta en el epic de Foundation
+  apps:
+    api: "{slug}_api"           # backend / API  → erika_caro_psicologa_api
+    web: "{slug}_web"           # sitio público  → erika_caro_psicologa_web
+
+# --- DevOps & Deployment ---------------------------------------------------
+devops:
+  containerization: "docker"    # dos apps de Dokploy (api y web) + contenedor PostgreSQL
+  ci_cd: "dokploy"              # despliegue automático por push a la rama principal
+  hosting: "hostinger-vps"      # VPS en Hostinger gestionado con Dokploy → erikacaropsicologa.com
+
+# --- Quality Gates (read by code-reviewer agent) ---------------------------
+quality:
+  linter: "eslint"              # declarado en devDependencies pero SIN archivo de config → se resuelve en Foundation
+  formatter: "none"
+  type_checker: "none"
+
+# --- Conventions Pointer ---------------------------------------------------
+conventions_file: ".specture/conventions.md"
+decisions_dir: ".specture/decisions/"

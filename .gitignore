@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Specture
+.specture/state/
+docs/.specture-meta/*
+!docs/.specture-meta/build-metrics.jsonl
+!docs/.specture-meta/design-metrics.jsonl
