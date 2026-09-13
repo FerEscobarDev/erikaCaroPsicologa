@@ -1,0 +1,13 @@
+# Specture — Project Settings
+# Owner: the framework. Written by `/specture:setup`; advanced by `/specture:doctor migrate`.
+# Flat `key: value` file (no nesting). Read by hooks, skills and the doctor.
+
+schema_version: "2.1.0"
+
+profile: full               # lean | full | custom
+
+hooks.enabled: true                       # TDD Honesty Gate (PreToolUse deny on sealed tests)
+context7.enabled: true                    # Context7 MCP in code-reviewer (Dimension 5) and modernize
+docs_index.enabled: true                  # Docs Index Resolution when .specture/docs-index.yml exists
+docs_index.max_entries_per_dispatch: 3    # hard cap of indexed docs passed to ONE agent dispatch
+knowledge.enabled: true                   # knowledge-capture prompts (build Step 8.5, debug Phase 4.5)

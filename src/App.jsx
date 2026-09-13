@@ -10,6 +10,7 @@ import ContactSection from '@/components/sections/ContactSection';
 import Footer from '@/components/Footer';
 import FixedAppointmentButton from '@/components/FixedAppointmentButton';
 import { Toaster } from '@/components/ui/toaster';
+import PhoneChangeModal from '@/components/PhoneChangeModal';
 
 import BlogListPage from '@/pages/BlogListPage';
 import ArticlePage from '@/pages/ArticlePage';
@@ -77,6 +78,7 @@ const App = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-background antialiased">
+      <PhoneChangeModal />
       {renderPage()}
       <Toaster />
     </div>
