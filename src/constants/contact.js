@@ -16,5 +16,6 @@ export const whatsappLink = (message) =>
 export const WHATSAPP_MESSAGE_SESSION =
   'Hola Erika, vi tu página web y me gustaría agendar una sesión contigo. ¿Podrías brindarme información sobre la disponibilidad y el proceso para reservar? ¡Gracias!';
 
-export const WHATSAPP_MESSAGE_SUPPORT_GROUP =
-  "Hola Erika, me gustaría unirme al grupo de apoyo 'Amiga, no estás sola'. ¿Me puedes dar más información?";
+/** Enlace de invitación directa al grupo de WhatsApp "Amiga, no estás sola". */
+export const WHATSAPP_SUPPORT_GROUP_URL =
+  'https://chat.whatsapp.com/Lv2mVk0UO7rAYDpiZpPIff?s=cl&p=a&mlu=4&ilr=4';
